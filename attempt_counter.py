@@ -14,39 +14,32 @@ def pixel_grab(x,y):
     return pixel_color
 
 def checker():
-
     restart = pyautogui.locateCenterOnScreen("restart.png", confidence=0.7)
-
     start_time = time.time()
+    
+    if restart is None:
+        return
+        
+    print(restart)
+    
+    x_coord, y_coord = restart
+    
+    while True:
+        current_time = time.time()
 
-    if restart is not None:
-        print(restart)
+        pixel_color = pixel_grab(x_coord, y_coord)
 
-        x_coord, y_coord = restart
+        print(pixel_color)
 
-        while True:
-            if restart is not None:
-
-                current_time = time.time()
-
-                pixel_color = pixel_grab(x_coord, y_coord)
-
-                print(pixel_color)
-
-                # Checks if screen turns black to confirm the user pressed restart and isnt just pausing
-                if pixel_color == (0, 0, 0):
-                    return True
+        # Checks if screen turns black to confirm the user pressed restart and isnt just pausing
+        if pixel_color == (0, 0, 0):
+            return True
                 
-                # Breaks the loop after 3 seconds of restart button being visible and assumes user is just pausing, which will then repeat the process
-                if current_time - start_time >= 10:
-                    break
+        # Breaks the loop after 3 seconds of restart button being visible and assumes user is just pausing, which will then repeat the process
+        if current_time - start_time >= 10:
+            break
 
-                #restart = pyautogui.locateCenterOnScreen("restart.png", confidence=0.7)
-
-                time.sleep(0.2)
-
-            else:
-                break
+        time.sleep(0.2)
 
 def update_text():
 
